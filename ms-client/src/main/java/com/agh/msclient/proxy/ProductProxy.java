@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(name = "ms-product")
+@FeignClient(name = "zuul-server")
 @RibbonClient(name = "ms-product")
 public interface ProductProxy {
 
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ms-product/products/{id}", method = RequestMethod.GET)
     Product find (@PathVariable("id") String id);
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    @RequestMapping(value = "/ms-product/products", method = RequestMethod.GET)
     List<Product> findAll ();
 }
