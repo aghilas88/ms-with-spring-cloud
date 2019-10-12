@@ -11,5 +11,6 @@ import org.springframework.stereotype.Component;
 @Setter
 public class MsClientConf {
     private int nbProductsMax;
-
+    private String zuulUser;
+    private String zuulPassword;
 }
