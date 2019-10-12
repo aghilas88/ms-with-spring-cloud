@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @FeignClient(name = "zuul-server")
-@RibbonClient(name = "ms-product")
+//@RibbonClient(name = "ms-product")
 public interface ProductProxy {
 
     @RequestMapping(value = "/ms-product/products/{id}", method = RequestMethod.GET)

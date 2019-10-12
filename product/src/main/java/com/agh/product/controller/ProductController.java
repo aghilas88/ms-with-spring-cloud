@@ -1,6 +1,8 @@
 package com.agh.product.controller;
 
 import com.agh.product.model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +15,8 @@ import java.util.stream.Stream;
 @RequestMapping("/products")
 public class ProductController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Product find (@PathVariable String id) {
         return Product.builder()
@@ -23,6 +27,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Product> findAll () {
+        logger.info("find all products");
         Stream.Builder<Product> builder = Stream.builder();
         return builder.add(Product.builder()
                         .id("90")
