@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  ms-config-server-container:
+    image: agh/config-server:0.0.1-SNAPSHOT
+    build:
+      context: ./config-server/
+      dockerfile: Dockerfile
+    ports:
+      - "9101:9101"
+    network_mode: "host"
+
+  ms-eureka-server-container:
+    image: agh/eureka-server:0.0.1-SNAPSHOT
+    build:
+      context: ./eureka-server/
+      dockerfile: Dockerfile
+    ports:
+      - "9102:9102"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
+
+  ms-zuul-server-container:
+    image: agh/zuul-server:0.0.1-SNAPSHOT
+    build:
+      context: ./zuul-server/
+      dockerfile: Dockerfile
+    ports:
+      - "9103:9103"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+      - ms-eureka-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
+
+  ms-product-container:
+    image: agh/ms-product:0.0.1-SNAPSHOT
+    build:
+      context: ./product/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+      - ms-eureka-server-container
+      - ms-zuul-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
+
+  ms-details-container:
+    image: agh/ms-details:0.0.1-SNAPSHOT
+    build:
+      context: ./details/
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+      - ms-eureka-server-container
+      - ms-zuul-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
+
+  ms-pricing-container:
+    image: agh/ms-pricing:0.0.1-SNAPSHOT
+    build:
+      context: ./pricing/
+      dockerfile: Dockerfile
+    ports:
+      - "8282:8282"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+      - ms-eureka-server-container
+      - ms-zuul-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
+
+  ms-client-container:
+    image: agh/ms-client:0.0.1-SNAPSHOT
+    build:
+      context: ./ms-client/
+      dockerfile: Dockerfile
+    ports:
+      - "8585:8585"
+    network_mode: "host"
+    depends_on:
+      - ms-config-server-container
+      - ms-eureka-server-container
+      - ms-zuul-server-container
+    #command: ["./wait-for-it.sh", "ms-config-server-container:9101",java","-jar","/app.jar"]
