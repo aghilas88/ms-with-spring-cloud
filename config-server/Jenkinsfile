@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'cd config-server'
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn -f config-server/pom.xml -B -DskipTests clean package'
             }
         }
     }
